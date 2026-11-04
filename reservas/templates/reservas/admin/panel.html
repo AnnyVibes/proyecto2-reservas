@@ -31,7 +31,7 @@
 <div class="panel-tarjetas">
 {% for tarjeta in tarjetas %}
 <article class="tarjeta"><h2 class="font-semibold">{{ tarjeta.nombre }}</h2>
-<p class="panel-numero">{% if tarjeta.unidad == '$' %}${% endif %}{{ tarjeta.valor|floatformat:2 }}{% if tarjeta.unidad != '$' %} {{ tarjeta.unidad }}{% endif %}</p>
+<p class="panel-numero">{% if tarjeta.unidad == '$' %}${% endif %}{{ tarjeta.valor|floatformat:tarjeta.decimales }}{% if tarjeta.unidad != '$' %} {{ tarjeta.unidad }}{% endif %}</p>
 <p class="texto-suave text-sm">{% if tarjeta.variacion == None %}Sin base anterior{% else %}{% if tarjeta.variacion > 0 %}+{% endif %}{{ tarjeta.variacion|floatformat:2 }}% frente al período anterior{% endif %}</p></article>
 {% endfor %}
 </div>

@@ -2,7 +2,6 @@
 from datetime import date, timedelta
 
 from django.contrib.admin.views.decorators import staff_member_required
-from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.views.decorators.http import require_GET
@@ -49,6 +48,7 @@ def panel_kpis(request):
     contexto.update({
         'kpis': actual, 'anterior_desde': anterior_desde, 'anterior_hasta': anterior_hasta,
         'tarjetas': [{'nombre': nombre, 'valor': actual[clave], 'unidad': unidad,
+                     'decimales': 0 if clave in ('cancelaciones', 'clientes_nuevos', 'reservas_totales') else 2,
                      'variacion': variacion(actual[clave], anterior[clave])}
                     for clave, nombre, unidad in definiciones],
         'graficos': {

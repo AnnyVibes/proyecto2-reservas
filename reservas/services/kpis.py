@@ -4,7 +4,6 @@ from decimal import Decimal
 from zoneinfo import ZoneInfo
 
 from django.contrib.auth import get_user_model
-from django.utils import timezone
 
 from reservas.models import Booking, Payment, Resource
 from reservas.services.reservas import FRANJA_FIN, FRANJA_INICIO
