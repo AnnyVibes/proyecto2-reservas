@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Panel de KPIs{% endblock %}
+{% block extra_head %}
+<style>
+.panel-filtros{display:flex;flex-wrap:wrap;gap:1rem;align-items:end;padding:1.25rem;margin:1.25rem 0}
+.panel-filtros label{display:flex;flex-direction:column;gap:.35rem;flex:1 1 150px;min-width:0}
+.panel-filtros input,.panel-filtros select{border:1px solid var(--borde);border-radius:.5rem;padding:.6rem;width:100%;min-width:0;background:white}
+.panel-tarjetas{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1rem;margin:1rem 0}
+.panel-tarjetas article{padding:1.2rem;min-width:0;overflow-wrap:anywhere}
+.panel-numero{font-size:2rem;font-weight:800;line-height:1.4;color:var(--verde-oscuro)}
+.panel-graficos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1.5rem 0}
+.panel-graficos article{padding:1.2rem;min-width:0}.panel-graficos article:first-child{grid-column:1/-1}
+.panel-lienzo{position:relative;height:260px;margin-top:1rem}.panel-tabla{overflow-x:auto;margin-top:1rem}
+.panel-tabla table{width:100%;border-collapse:collapse}.panel-tabla th,.panel-tabla td{text-align:left;padding:.8rem;border-bottom:1px solid var(--borde)}
+@media(max-width:600px){.panel-graficos{grid-template-columns:minmax(0,1fr)}.panel-tarjetas{grid-template-columns:minmax(0,1fr)}.panel-filtros label{flex-basis:100%}}
+</style>
+{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-bold">Panel de KPIs</h1>
+<p class="texto-suave mt-2">Uso de las canchas y resultados del período · America/Panama</p>
+<form method="get" class="tarjeta panel-filtros" aria-label="Filtrar indicadores">
+    <label for="desde">Desde<input type="date" id="desde" name="desde" value="{{ desde }}" required></label>
+    <label for="hasta">Hasta<input type="date" id="hasta" name="hasta" value="{{ hasta }}" required></label>
+    <label for="pista">Cancha<select id="pista" name="pista"><option value="">Todas las canchas</option>
+    {% for p in pistas %}<option value="{{ p.pk }}" {% if pista_id == p.pk|stringformat:'s' %}selected{% endif %}>{{ p.name }}</option>{% endfor %}
+    </select></label>
+    <button class="btn btn-primario" type="submit">Aplicar filtros</button>
+</form>
+{% if error %}<div role="alert" class="aviso aviso-error">{{ error }}</div>{% else %}
+<p class="texto-suave">Fechas inclusivas. Variación frente a {{ anterior_desde|date:'d/m/Y' }}–{{ anterior_hasta|date:'d/m/Y' }}.</p>
+<div class="panel-tarjetas">
+{% for tarjeta in tarjetas %}
+<article class="tarjeta"><h2 class="font-semibold">{{ tarjeta.nombre }}</h2>
+<p class="panel-numero">{% if tarjeta.unidad == '$' %}${% endif %}{{ tarjeta.valor|floatformat:2 }}{% if tarjeta.unidad != '$' %} {{ tarjeta.unidad }}{% endif %}</p>
+<p class="texto-suave text-sm">{% if tarjeta.variacion == None %}Sin base anterior{% else %}{% if tarjeta.variacion > 0 %}+{% endif %}{{ tarjeta.variacion|floatformat:2 }}% frente al período anterior{% endif %}</p></article>
+{% endfor %}
+</div>
+<div class="aviso aviso-info">
+    Capacidad teórica: {{ kpis.horas_disponibles }} h (12 h por día y cancha).
+    Horas pico: {% for hora in kpis.horas_pico_top %}{{ hora }}:00{% if not forloop.last %}, {% endif %}{% empty %}Sin reservas activas{% endfor %}.
+</div>
+<div class="panel-graficos">
+<article class="tarjeta"><h2 class="text-xl font-bold">Ingresos por día</h2><div class="panel-lienzo"><canvas id="ingresos" role="img" aria-label="Ingresos aprobados por día"></canvas></div></article>
+<article class="tarjeta"><h2 class="text-xl font-bold">Ocupación por cancha</h2><div class="panel-lienzo"><canvas id="ocupacion" role="img" aria-label="Porcentaje de ocupación por cancha"></canvas></div></article>
+<article class="tarjeta"><h2 class="text-xl font-bold">Horas pico</h2><div class="panel-lienzo"><canvas id="horas" role="img" aria-label="Reservas activas que tocan cada hora"></canvas></div></article>
+</div>
+<section class="tarjeta p-5"><h2 class="text-xl font-bold">Canchas más usadas</h2>
+<div class="panel-tabla"><table><caption class="texto-suave text-left">Ranking por horas de reservas confirmadas</caption><thead><tr><th scope="col">Cancha</th><th scope="col">Horas</th><th scope="col">Ocupación</th></tr></thead><tbody>
+{% for c in kpis.canchas_mas_usadas %}<tr><th scope="row">{{ c.nombre }}</th><td>{{ c.horas|floatformat:2 }}</td><td>{{ c.ocupacion|floatformat:2 }}%</td></tr>{% empty %}<tr><td colspan="3">No hay canchas registradas.</td></tr>{% endfor %}
+</tbody></table></div></section>
+<p class="texto-suave text-sm mt-4">Cancelaciones según el estado actual de las reservas con inicio en el rango. Ingresos por fecha del pago aprobado, incluso si se canceló la reserva. Ticket promedio por pago aprobado. Clientes nuevos es global y excluye cuentas staff y superusuarios.</p>
+<noscript><p class="aviso aviso-info">Activa JavaScript para ver los gráficos. Los indicadores y el ranking están disponibles arriba.</p></noscript>
+{{ graficos|json_script:'datos-kpis' }}
+{% endif %}
+{% endblock %}
+{% block extra_js %}
+{% if not error %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+(() => {
+    if (!window.Chart) return;
+    const d = JSON.parse(document.getElementById('datos-kpis').textContent);
+    const grafico = (id, tipo, etiquetas, valores, titulo) => new Chart(document.getElementById(id), {
+        type: tipo,
+        data: {labels: etiquetas, datasets: [{label: titulo, data: valores, backgroundColor: '#16805d', borderColor: '#16805d', tension: .25}]},
+        options: {responsive: true, maintainAspectRatio: false, scales: {y: {beginAtZero: true}}, plugins: {legend: {display: false}}}
+    });
+    grafico('ingresos', 'line', d.dias, d.ingresos, 'Ingresos ($)');
+    grafico('ocupacion', 'bar', d.canchas, d.ocupacion, 'Ocupación (%)');
+    grafico('horas', 'bar', d.horas, d.reservas, 'Reservas');
+})();
+</script>
+{% endif %}
+{% endblock %}
