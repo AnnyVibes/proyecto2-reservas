@@ -1,0 +1,13 @@
+# AI Development Log · Anllelina Varcasia
+
+**IA utilizada:** Claude Code (Claude Opus 5.5), agente en la app de escritorio de Claude, con acceso a la carpeta del proyecto y a GitHub mediante `gh`. Cada acción que modificaba algo (crear el repositorio, instalar dependencias, crear issues, editar archivos, hacer commits o push) se autorizó antes de ejecutarla.
+
+| # | Actividad | Solicitud | Resultado | Decisión |
+|---|---|---|---|---|
+| 1 | Análisis del enunciado | Leer el PDF del Proyecto 2 y proponer un plan antes de desarrollar. | Plan con fases ODD → SDD, reparto por archivos y orden de trabajo en cadena. | Se pidió rehacerlo con trabajo en cadena y el front del Proyecto 1. |
+| 2 | Revisión del Proyecto 1 | Revisar el front de `proyecto1-reservas` y una página pública de Calendly como referencia de diseño. | Resumen de la estructura Django y del flujo día → hora → Confirmar. | Aprobado el plan final (D-01 a D-05). |
+| 3 | Repositorio | Copiar el Proyecto 1 con su historial en `proyecto2-reservas` (público) e instalar dependencias. | Repositorio creado; 100 pruebas originales en verde. | Aceptado. |
+| 4 | Organización | Crear los issues #1, #2 y #3 de la cadena. | Issues con entregables, archivos propios y la instrucción de traspaso. | Aceptado. |
+| 5 | ODD y especificación | Redactar outcomes, requisitos, reglas de negocio y criterios de aceptación. | `specs/outcomes.md`, `requirements.md`, `business-rules.md` y `acceptance-criteria.md`. | Revisado contra el código: BR-02 se corrigió porque el servidor admite franjas de más de 1 hora. |
+| 6 | Front | Rediseñar inicio, login y registro, y crear la reserva paso a paso con imágenes de fútbol. | Plantillas nuevas, CSS propio, SVG propios, `views_front.py`, `forms_cuenta.py` y 10 pruebas nuevas. | Se detectó en el navegador que la confirmación se veía antes de tiempo; se corrigió el CSS. |
+| 7 | Verificación | Probar en el navegador local el flujo completo con el usuario demo y la tarjeta de prueba. | Reserva confirmada; el horario reservado desaparece de la lista; diseño correcto en celular. | Aceptado. |
