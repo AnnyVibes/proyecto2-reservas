@@ -6,7 +6,7 @@ Proyecto 1 (`reservas/services/`) y aquí quedan especificadas; BR-09 es nueva.
 | ID | Regla | Dónde se valida |
 |---|---|---|
 | BR-01 | **No se permite doble reserva:** una cancha no puede tener dos reservas activas que se solapen, ni una reserva que se solape con un bloqueo. Dos franjas se solapan si `inicio_a < fin_b` y `fin_a > inicio_b`. | `services/reservas.py` (servidor) |
-| BR-02 | Una reserva va de las 09:00 a las 21:00 como máximo. La reserva paso a paso ofrece turnos de 1 hora; el calendario completo permite franjas más largas dentro de ese horario. | `services/reservas.py` |
+| BR-02 | Una reserva va de las 09:00 a las 21:00 como máximo. La reserva paso a paso ofrece turnos de 1 hora o el día completo (09:00–21:00) cuando todas sus horas están libres; el calendario completo permite cualquier franja dentro de ese horario. | `services/reservas.py` |
 | BR-03 | No se puede reservar una franja que empieza en el pasado. | `services/reservas.py` |
 | BR-04 | El fin de la reserva debe ser posterior al inicio y caer en el mismo día. | `services/reservas.py` |
 | BR-05 | Una reserva puede repetirse cada semana hasta 12 semanas más; si una semana choca, no se crea ninguna. | `services/reservas.py` |

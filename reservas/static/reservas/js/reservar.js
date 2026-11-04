@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const errorCarga = document.getElementById('error-carga');
     const selector = document.getElementById('selector');
     const panelHoras = document.getElementById('panel-horas');
-    document.getElementById('zona-horaria').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     function cargarMes() {
         const inicio = new Date(mesVisible);
@@ -123,37 +122,51 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Una fila con su botón; al elegirla aparece "Confirmar" a su lado, como en una agenda en línea
+    function filaOpcion(clase, texto, etiqueta, inicio, fin, todoElDia) {
+        const fila = document.createElement('div');
+        fila.className = 'fila-hora';
+        const boton = document.createElement('button');
+        boton.type = 'button';
+        boton.className = clase;
+        boton.textContent = texto;
+        boton.setAttribute('aria-label', etiqueta);
+        boton.addEventListener('click', () => {
+            listaHoras.querySelectorAll('.fila-hora').forEach(f => {
+                f.classList.remove('activa');
+                const c = f.querySelector('.confirmar'); if (c) { c.remove(); }
+            });
+            fila.classList.add('activa');
+            const confirmar = document.createElement('button');
+            confirmar.type = 'button';
+            confirmar.className = 'confirmar';
+            confirmar.textContent = 'Confirmar';
+            confirmar.addEventListener('click', () => confirmarHorario(inicio, fin, todoElDia));
+            fila.appendChild(confirmar);
+            confirmar.focus();
+        });
+        fila.appendChild(boton);
+        return fila;
+    }
+
     function mostrarHoras(libres) {
         listaHoras.innerHTML = '';
         if (!libres.length) {
             listaHoras.innerHTML = '<p class="sin-horas">Ya no quedan horarios libres este día. Elige otro.</p>';
             return;
         }
+        // El día completo solo se ofrece si todas sus horas están libres
+        if (libres.length === datos.hora_fin - datos.hora_inicio) {
+            const inicio = libres[0][0], fin = libres[libres.length - 1][1];
+            listaHoras.appendChild(filaOpcion('todo-el-dia', `Todo el día · ${hora(inicio)} a ${hora(fin)}`,
+                `Todo el día, de ${hora(inicio)} a ${hora(fin)}`, inicio, fin, true));
+            const separador = document.createElement('p');
+            separador.className = 'separador-horas';
+            separador.textContent = 'O una hora';
+            listaHoras.appendChild(separador);
+        }
         libres.forEach(([inicio, fin]) => {
-            const fila = document.createElement('div');
-            fila.className = 'fila-hora';
-            const boton = document.createElement('button');
-            boton.type = 'button';
-            boton.className = 'hora';
-            boton.textContent = hora(inicio);
-            boton.setAttribute('aria-label', `${hora(inicio)} a ${hora(fin)}`);
-            boton.addEventListener('click', () => {
-                // Al elegir un horario aparece "Confirmar" a su lado, como en una agenda en línea
-                listaHoras.querySelectorAll('.fila-hora').forEach(f => {
-                    f.classList.remove('activa');
-                    const c = f.querySelector('.confirmar'); if (c) { c.remove(); }
-                });
-                fila.classList.add('activa');
-                const confirmar = document.createElement('button');
-                confirmar.type = 'button';
-                confirmar.className = 'confirmar';
-                confirmar.textContent = 'Confirmar';
-                confirmar.addEventListener('click', () => confirmarHorario(inicio, fin));
-                fila.appendChild(confirmar);
-                confirmar.focus();
-            });
-            fila.appendChild(boton);
-            listaHoras.appendChild(fila);
+            listaHoras.appendChild(filaOpcion('hora', hora(inicio), `${hora(inicio)} a ${hora(fin)}`, inicio, fin, false));
         });
     }
 
@@ -166,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const bloqueNueva = document.getElementById('pago-tarjeta-nueva');
     let pendiente = null;
 
-    function confirmarHorario(inicio, fin) {
+    function confirmarHorario(inicio, fin, todoElDia) {
         if (!datos.autenticado) {
             // Sin sesión: primero entrar o crear cuenta, y volver a esta misma página
             window.location.href = `/login/?next=${encodeURIComponent(window.location.pathname)}`;
@@ -175,7 +188,8 @@ document.addEventListener('DOMContentLoaded', function () {
         pendiente = { inicio, fin };
         const t = textoFecha(inicio);
         document.getElementById('pago-fecha').textContent = t.charAt(0).toUpperCase() + t.slice(1);
-        document.getElementById('pago-horario').textContent = `de ${hora(inicio)} a ${hora(fin)}`;
+        document.getElementById('pago-horario').textContent =
+            `de ${hora(inicio)} a ${hora(fin)}` + (todoElDia ? ' (todo el día)' : '');
         repetir.value = '0';
         errorPago.classList.add('hidden');
         actualizarTotal();
@@ -191,8 +205,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function actualizarTotal() {
         const reservas = parseInt(repetir.value, 10) + 1;
-        document.getElementById('pago-total').textContent = `$${(precioHora * reservas).toFixed(2)}`;
-        document.getElementById('pago-detalle-total').textContent = `${reservas} reserva(s) × 1 h × $${precioHora.toFixed(2)}`;
+        const horas = (pendiente.fin - pendiente.inicio) / 3600000;
+        document.getElementById('pago-total').textContent = `$${(precioHora * horas * reservas).toFixed(2)}`;
+        document.getElementById('pago-detalle-total').textContent = `${reservas} reserva(s) × ${horas} h × $${precioHora.toFixed(2)}`;
     }
 
     function actualizarMetodo() {

@@ -7,7 +7,7 @@ Versión 1.0 · Responsable: Anllelina Varcasia · Deriva de `outcomes.md`.
 |---|---|---|---|
 | RF-01 | Ver las canchas con su deporte, descripción y precio por hora, sin iniciar sesión. | O3 | Anllelina |
 | RF-02 | Crear una cuenta con usuario, nombre, correo y contraseña, con validaciones (BR-09). | O4 | Anllelina |
-| RF-03 | Reservar paso a paso: elegir un día disponible del mes, ver sus horarios libres y confirmar uno. | O2, O3 | Anllelina |
+| RF-03 | Reservar paso a paso: elegir un día disponible del mes, ver sus horarios libres y confirmar una hora o el día completo, con opción de repetir la reserva las próximas semanas (BR-05). | O2, O3 | Anllelina |
 | RF-04 | Pedir inicio de sesión solo al confirmar, y volver a la misma cancha después. | O2 | Anllelina |
 | RF-05 | Pagar la reserva con el pago simulado, con tarjeta nueva o guardada. | O2 | Base Proyecto 1 |
 | RF-06 | Impedir reservas que se solapen con otra reserva activa o con un bloqueo (BR-01). | O1 | Angélica |

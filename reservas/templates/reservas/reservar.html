@@ -4,7 +4,10 @@
 {% block title %}Reservar · {{ resource.name }}{% endblock %}
 
 {% block content %}
-    <a href="{% url 'home' %}" class="text-sm texto-suave hover:underline">← Volver a las canchas</a>
+    <a href="{% url 'home' %}" class="btn-volver">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        Volver a las canchas
+    </a>
 
     <!-- Genera la cookie csrftoken que el JS envía en la cabecera X-CSRFToken -->
     {% csrf_token %}
@@ -27,7 +30,8 @@
                 ${{ resource.price_per_hour|stringformat:".2f" }} por hora
             </p>
             {% if resource.description %}<p class="texto-suave text-sm mt-4">{{ resource.description }}</p>{% endif %}
-            <p class="texto-suave text-sm mt-4">Puedes cancelar hasta 2 horas antes desde <strong>Mis reservas</strong>.</p>
+            <p class="texto-suave text-sm mt-4">Puedes reservar una hora o el día completo, y repetir la reserva hasta 12 semanas al confirmar.</p>
+            <p class="texto-suave text-sm mt-2">Puedes cancelar hasta 2 horas antes desde <strong>Mis reservas</strong>.</p>
             <a href="{% url 'calendario_full' resource.id %}" class="text-sm texto-suave hover:underline block mt-4">Ver calendario completo y reservas recurrentes</a>
         </aside>
 
@@ -43,7 +47,6 @@
                     <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
                 </div>
                 <div class="dias" id="dias" role="grid" aria-label="Días del mes"></div>
-                <p class="zona">🌎 Zona horaria: <span id="zona-horaria"></span></p>
                 <p id="error-carga" role="alert" class="hidden aviso aviso-error mt-3">No se pudo cargar la disponibilidad. Inténtalo de nuevo.</p>
             </div>
 

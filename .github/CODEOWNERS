@@ -11,6 +11,8 @@
 /reservas/templates/reservas/registro.html  @AnnyVibes
 /reservas/templates/reservas/reservar.html  @AnnyVibes
 /reservas/templates/reservas/_modal_pago.html @AnnyVibes
+/reservas/templates/reservas/calendario_full.html @AnnyVibes
+/reservas/templates/reservas/mis_reservas.html @AnnyVibes
 /reservas/views_front.py                    @AnnyVibes
 /reservas/forms_cuenta.py                   @AnnyVibes
 /reservas/templatetags/                     @AnnyVibes
