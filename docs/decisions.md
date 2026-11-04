@@ -36,3 +36,19 @@ Cada persona agrega sus decisiones al final, con número, fecha y autor. No se e
 - **Fecha / autor:** 2026-11-04 · Anllelina Varcasia
 - **Decisión:** el registro y la reserva paso a paso viven en `views_front.py` y `forms_cuenta.py`, en lugar de ampliar `views.py`.
 - **Motivo:** así Angélica puede trabajar en las vistas del panel sin tocar los mismos archivos.
+
+## D-08 · Conservar tecnología y la regla de solape existente
+- **Fecha / responsable:** 2026-11-04 · Paso de Angélica; ejecución técnica por Codex, pendiente de revisión de Angélica.
+- **Decisión de implementación del agente:** mantener Python/Django/SQLite y las dependencias existentes; documentar las capas y el modelo real antes de implementar el panel. No alterar hay_conflicto ni crear_reservas para preservar el contrato 409 y BR-01.
+- **Límite:** los comandos demo y el guardado del admin no pasan por crear_reservas. Se dejó el hallazgo en el issue #2 porque modificar esos archivos no está autorizado. No se atribuye una garantía de exclusión concurrente a SQLite.
+
+## D-09 · Fechas y denominadores explícitos para KPIs
+- **Fecha / responsable:** 2026-11-04 · Paso de Angélica; propuesta implementada por Codex, pendiente de revisión de Angélica.
+- **Decisión de implementación del agente:** fechas locales inclusivas, últimos 30 días incluido hoy, máximo 366 días; variación frente al período anterior de igual duración. Capacidad teórica de 12 horas por día y cancha sin restar bloqueos. Reservas/cancelaciones por fecha de inicio; ingresos por created_at del pago aprobado; ticket por pago aprobado. Clientes nuevos globales, excluyendo staff/superusuarios. Se muestran todos los empates en horas pico.
+- **Motivo:** explicitar métricas que el enunciado no detalla y evitar mezclar cobros con fechas de juego. Las cancelaciones no implican reembolsos en el modelo existente.
+
+## D-10 · Cálculo puro separado de lectura y panel sin archivos estáticos nuevos
+- **Fecha / responsable:** 2026-11-04 · Paso de Angélica; propuesta implementada por Codex, pendiente de revisión de Angélica.
+- **Decisión de implementación del agente:** núcleo resumir_kpis puro sobre datos explícitos; adaptador calcular_kpis de solo lectura con cuatro consultas por período. Vista staff separada, Chart.js 4.4.1, json_script y estilos dentro de la plantilla; solo adiciones autorizadas a navegación/rutas y CODEOWNERS.
+- **Validación:** 23 pruebas nuevas para cálculos, filtros, zona horaria, permisos, datos vacíos y serialización segura. Inspección del navegador a 375 px sin desbordamiento horizontal y con tres gráficos renderizados.
+- **Decisión reservada a Angélica:** revisión del PR y merge; no se afirma que haya aprobado las decisiones técnicas durante esta ejecución.

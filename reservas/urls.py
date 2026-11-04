@@ -1,8 +1,10 @@
 from django.urls import path
 from django.views.generic import RedirectView
 from . import views, views_front
+from .views_admin import panel_kpis
 
 urlpatterns = [
+    path('panel/', panel_kpis, name='panel_kpis'),
     # Front del Proyecto 2 (paso 1): reserva paso a paso y registro
     path('reservar/<int:resource_id>/', views_front.reservar, name='reservar'),
     path('registro/', views_front.registro, name='registro'),
