@@ -1,35 +1,41 @@
-<!DOCTYPE html>
+{% load static %}<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Gestor de Reservas{% endblock %} · Gestor de Reservas</title>
+    <title>{% block title %}Reservas de canchas{% endblock %} · Golazo Reservas</title>
+    <link rel="icon" href="{% static 'reservas/img/balon.svg' %}" type="image/svg+xml">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="{% static 'reservas/css/estilo.css' %}" rel="stylesheet">
     {% block extra_head %}{% endblock %}
 </head>
-<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col">
 
     <!-- NAVBAR -->
-    <nav class="bg-blue-700 text-white shadow">
+    <nav class="barra">
         <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-2">
-            <a href="{% url 'home' %}" class="text-lg font-bold tracking-tight">🏟️ Gestor de Reservas</a>
+            <a href="{% url 'home' %}" class="marca text-lg">
+                <img src="{% static 'reservas/img/balon.svg' %}" alt="">
+                Golazo Reservas
+            </a>
 
             <div class="flex flex-wrap items-center gap-1 text-sm">
-                <a href="{% url 'home' %}" class="px-3 py-2 rounded hover:bg-blue-600">Pistas</a>
+                <a href="{% url 'home' %}" class="enlace-nav">Canchas</a>
                 {% if user.is_authenticated %}
-                    <a href="{% url 'mis_reservas' %}" class="px-3 py-2 rounded hover:bg-blue-600">Mis reservas</a>
-                    <a href="{% url 'mis_tarjetas' %}" class="px-3 py-2 rounded hover:bg-blue-600">Mis tarjetas</a>
+                    <a href="{% url 'mis_reservas' %}" class="enlace-nav">Mis reservas</a>
+                    <a href="{% url 'mis_tarjetas' %}" class="enlace-nav">Mis tarjetas</a>
                     {% if user.is_staff %}
-                        <a href="{% url 'panel_demanda' %}" class="px-3 py-2 rounded hover:bg-blue-600">Demanda</a>
-                        <a href="{% url 'admin:index' %}" class="px-3 py-2 rounded hover:bg-blue-600">Admin</a>
+                        <a href="{% url 'panel_demanda' %}" class="enlace-nav">Demanda</a>
+                        <a href="{% url 'admin:index' %}" class="enlace-nav">Admin</a>
                     {% endif %}
-                    <span class="px-3 py-2 text-blue-100">Hola, {{ user.username }}</span>
+                    <span class="saludo">Hola, {{ user.username }}</span>
                     <form method="post" action="{% url 'logout' %}" class="inline">
                         {% csrf_token %}
-                        <button type="submit" class="bg-red-500 hover:bg-red-600 px-3 py-2 rounded">Cerrar sesión</button>
+                        <button type="submit" class="btn btn-salir">Cerrar sesión</button>
                     </form>
                 {% else %}
-                    <a href="{% url 'login' %}" class="bg-green-500 hover:bg-green-600 px-3 py-2 rounded">Iniciar sesión</a>
+                    <a href="{% url 'registro' %}" class="enlace-nav">Crear cuenta</a>
+                    <a href="{% url 'login' %}" class="btn btn-primario">Iniciar sesión</a>
                 {% endif %}
             </div>
         </div>
@@ -40,13 +46,7 @@
         {% if messages %}
             <div class="mb-4 space-y-2">
                 {% for message in messages %}
-                    <div role="alert" class="p-3 rounded border
-                        {% if message.tags == 'error' %}bg-red-50 border-red-200 text-red-800
-                        {% elif message.tags == 'warning' %}bg-yellow-50 border-yellow-200 text-yellow-800
-                        {% elif message.tags == 'success' %}bg-green-50 border-green-200 text-green-800
-                        {% else %}bg-blue-50 border-blue-200 text-blue-800{% endif %}">
-                        {{ message }}
-                    </div>
+                    <div role="alert" class="aviso aviso-{{ message.tags|default:'info' }}">{{ message }}</div>
                 {% endfor %}
             </div>
         {% endif %}
@@ -54,8 +54,8 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="text-center text-xs text-gray-500 py-4">
-        Gestor de Reservas · Horario de reservas de 09:00 a 21:00
+    <footer class="text-center text-xs texto-suave py-6">
+        Golazo Reservas · Horario de reservas de 09:00 a 21:00
     </footer>
 
     {% block extra_js %}{% endblock %}

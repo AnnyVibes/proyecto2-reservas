@@ -1,0 +1,70 @@
+<!-- Modal de confirmación y pago simulado de la reserva paso a paso -->
+<div id="modal-pago" class="modal-fondo hidden" role="dialog" aria-modal="true" aria-labelledby="pago-titulo">
+    <form id="form-pago" class="modal-caja" autocomplete="off">
+        <h2 id="pago-titulo" class="text-xl font-bold mb-4">Confirmar reserva</h2>
+
+        <dl class="grid grid-cols-3 gap-y-1 text-sm mb-4">
+            <dt class="texto-suave">Cancha</dt><dd class="col-span-2 font-semibold">{{ resource.name }}</dd>
+            <dt class="texto-suave">Fecha</dt><dd id="pago-fecha" class="col-span-2 font-semibold"></dd>
+            <dt class="texto-suave">Horario</dt><dd id="pago-horario" class="col-span-2 font-semibold"></dd>
+        </dl>
+
+        <div class="campo">
+            <label for="pago-repetir">Repetir cada semana</label>
+            <select id="pago-repetir" class="w-full border rounded-lg px-3 py-2 bg-white">
+                <option value="0">No repetir</option>
+                {% for n in semanas_repeticion %}<option value="{{ n }}">{{ n }} semana{{ n|pluralize }} más</option>{% endfor %}
+            </select>
+        </div>
+
+        <div class="flex items-baseline justify-between rounded-lg p-3 my-4" style="background: var(--fondo)">
+            <span class="text-sm texto-suave" id="pago-detalle-total"></span>
+            <span class="text-xl font-bold" id="pago-total"></span>
+        </div>
+
+        <fieldset class="mb-3">
+            <legend class="text-sm font-semibold mb-2">Método de pago</legend>
+            {% for tarjeta in tarjetas %}
+            <label class="flex items-center gap-2 border rounded-lg px-3 py-2 mb-2 cursor-pointer">
+                <input type="radio" name="metodo" value="{{ tarjeta.id }}" {% if forloop.first %}checked{% endif %}>
+                <span>Tarjeta terminada en <strong>{{ tarjeta.last4 }}</strong>
+                    <span class="texto-suave text-sm">({{ tarjeta.marca }}, vence {{ tarjeta.vence }})</span></span>
+            </label>
+            {% endfor %}
+            <label class="flex items-center gap-2 border rounded-lg px-3 py-2 cursor-pointer">
+                <input type="radio" name="metodo" value="nueva" {% if not tarjetas %}checked{% endif %}>
+                <span>Usar una tarjeta nueva</span>
+            </label>
+        </fieldset>
+
+        <div id="pago-tarjeta-nueva">
+            <div class="campo">
+                <label for="pago-titular">Titular</label>
+                <input id="pago-titular" data-requerido maxlength="100" autocomplete="cc-name">
+            </div>
+            <div class="campo">
+                <label for="pago-numero">Número de tarjeta</label>
+                <input id="pago-numero" data-requerido inputmode="numeric" maxlength="23" autocomplete="cc-number" placeholder="4242 4242 4242 4242">
+            </div>
+            <div class="grid grid-cols-3 gap-2">
+                <div class="campo"><label for="pago-mes">Mes</label><input id="pago-mes" data-requerido inputmode="numeric" maxlength="2" placeholder="MM" autocomplete="cc-exp-month"></div>
+                <div class="campo"><label for="pago-anio">Año</label><input id="pago-anio" data-requerido inputmode="numeric" maxlength="4" placeholder="AAAA" autocomplete="cc-exp-year"></div>
+                <div class="campo"><label for="pago-cvv">CVV</label><input id="pago-cvv" data-requerido type="password" inputmode="numeric" maxlength="4" autocomplete="cc-csc"></div>
+            </div>
+            <label class="flex items-center gap-2 text-sm mt-3">
+                <input type="checkbox" id="pago-guardar"> Guardar mis datos para próximas reservas
+            </label>
+            <p class="text-xs texto-suave mt-2">
+                Pago simulado. Tarjetas de prueba: 4242 4242 4242 4242 (aprobada) y 4000 0000 0000 0002 (rechazada).
+                Nunca guardamos el número completo ni el CVV.
+            </p>
+        </div>
+
+        <p id="pago-error" role="alert" class="hidden aviso aviso-error text-sm mt-3"></p>
+
+        <div class="flex justify-end gap-2 mt-5">
+            <button type="button" id="pago-cancelar" class="btn btn-secundario">Cancelar</button>
+            <button type="submit" id="pago-pagar" class="btn btn-primario">Pagar y reservar</button>
+        </div>
+    </form>
+</div>

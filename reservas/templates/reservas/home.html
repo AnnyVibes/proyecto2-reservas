@@ -1,27 +1,41 @@
 {% extends 'base.html' %}
+{% load static deportes %}
 
-{% block title %}Pistas{% endblock %}
+{% block title %}Canchas{% endblock %}
 
 {% block content %}
-    <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold mb-2">Reserva tu pista</h1>
-        <p class="text-gray-600">Elige una pista para ver su disponibilidad y reservar una franja de 1 hora entre las 09:00 y las 21:00.</p>
+    <section class="portada mb-10">
+        <img class="cancha" src="{% static 'reservas/img/cancha.svg' %}" alt="">
+        <img class="balon hidden md:block" src="{% static 'reservas/img/balon.svg' %}" alt="">
+        <div class="contenido">
+            <h1>Reserva tu cancha en menos de un minuto</h1>
+            <p>Elige la cancha, mira los días con espacio y toma tu horario. Sin llamadas, sin mensajes y sin cruces de horario.</p>
+            <div class="chips">
+                <span class="chip">⏱ Turnos de 1 hora</span>
+                <span class="chip">🕘 09:00 a 21:00</span>
+                <span class="chip">✅ Confirmación al instante</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="mb-5">
+        <h2 class="text-2xl font-bold">Canchas disponibles</h2>
+        <p class="texto-suave">Elige una cancha para ver sus horarios libres.</p>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {% for resource in resources %}
-        <div class="bg-white rounded-lg shadow p-6 flex flex-col text-center hover:shadow-lg transition-shadow">
-            <h2 class="text-lg font-semibold mb-2">{{ resource.name }}</h2>
-            <p class="text-gray-600 mb-4 flex-grow">{{ resource.description|default:"Pista disponible." }}</p>
-            <p class="text-sm font-semibold text-gray-800 mb-4">${{ resource.price_per_hour|stringformat:".2f" }} / hora</p>
-            <a href="{% url 'calendario_full' resource.id %}"
-               class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
-                Ver calendario
-            </a>
+        <div class="tarjeta tarjeta-cancha">
+            <div class="icono"><img src="{% icono_deporte resource.name %}" alt=""></div>
+            <h3 class="text-lg font-bold">{{ resource.name }}</h3>
+            <p class="texto-suave text-sm mt-1 mb-4 flex-grow">{{ resource.description|default:"Cancha disponible para reservar por horas." }}</p>
+            <p class="precio mb-4">${{ resource.price_per_hour|stringformat:".2f" }} <small>/ hora</small></p>
+            <a href="{% url 'reservar' resource.id %}" class="btn btn-primario btn-bloque">Reservar</a>
+            <a href="{% url 'calendario_full' resource.id %}" class="text-sm text-center mt-3 texto-suave hover:underline">Ver calendario completo</a>
         </div>
         {% empty %}
-        <p class="col-span-full text-center text-gray-500">
-            No hay pistas disponibles. Cárgalas con <code>python manage.py loaddata pistas</code>.
+        <p class="col-span-full text-center texto-suave">
+            No hay canchas disponibles. Cárgalas con <code>python manage.py loaddata pistas</code>.
         </p>
         {% endfor %}
     </div>
