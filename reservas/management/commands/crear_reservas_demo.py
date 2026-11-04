@@ -18,10 +18,12 @@ class Command(BaseCommand):
             user.save()
             self.stdout.write(self.style.SUCCESS("Usuario demo_user creado."))
 
-        # Crear un recurso demo si no existe
-        recurso, creado = Resource.objects.get_or_create(name='Pista Pádel 1', defaults={'description': 'Pista de pádel exterior'})
-        if creado:
-            self.stdout.write(self.style.SUCCESS("Recurso Pista Pádel 1 creado."))
+        # Usa la cancha de pádel existente (fixture "pistas"); solo crea una si no hay ninguna cancha
+        recurso = (Resource.objects.filter(name__icontains='padel').order_by('id').first()
+                   or Resource.objects.order_by('id').first())
+        if recurso is None:
+            recurso = Resource.objects.create(name='Pista de padel')
+            self.stdout.write(self.style.SUCCESS("Recurso Pista de padel creado."))
 
         # Limpia solo las reservas anteriores del usuario demo (nunca las de otros usuarios)
         Booking.objects.filter(user=user).delete()
