@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Crear cuenta{% endblock %}
+
+{% block content %}
+    <div class="tarjeta acceso">
+        <div class="lado-imagen">
+            <img class="cancha" src="{% static 'reservas/img/cancha.svg' %}" alt="">
+            <div>
+                <h2>Tu cancha, a un clic</h2>
+                <p>Crea tu cuenta para reservar, pagar y consultar tus partidos desde un solo lugar.</p>
+            </div>
+            <img class="balon" src="{% static 'reservas/img/balon.svg' %}" alt="">
+        </div>
+
+        <div class="formulario">
+            <h1>Crear cuenta</h1>
+            <p class="texto-suave mt-1">Solo te toma un minuto.</p>
+
+            {% if form.non_field_errors %}
+                <div class="errores-generales" role="alert">{% for e in form.non_field_errors %}{{ e }} {% endfor %}</div>
+            {% endif %}
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {% for campo in form %}
+                <div class="campo{% if campo.errors %} con-error{% endif %}">
+                    <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+                    {% if campo.field.widget.input_type == 'password' %}
+                        <div class="clave">
+                            {{ campo }}
+                            <button type="button" data-ver-clave="{{ campo.id_for_label }}" aria-label="Mostrar contraseña">Mostrar</button>
+                        </div>
+                    {% else %}
+                        {{ campo }}
+                    {% endif %}
+                    {% for error in campo.errors %}<p class="error">{{ error }}</p>{% endfor %}
+                    {% if campo.name == 'password1' %}<p class="ayuda">Al menos 8 caracteres, que no sea solo números ni una contraseña común.</p>{% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primario btn-bloque mt-6">Crear cuenta</button>
+            </form>
+
+            <p class="pie-acceso">¿Ya tienes cuenta? <a href="{% url 'login' %}{% if request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}">Inicia sesión</a></p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'reservas/js/ver_clave.js' %}"></script>
+{% endblock %}

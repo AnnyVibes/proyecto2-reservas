@@ -1,8 +1,11 @@
 from django.urls import path
 from django.views.generic import RedirectView
-from . import views
+from . import views, views_front
 
 urlpatterns = [
+    # Front del Proyecto 2 (paso 1): reserva paso a paso y registro
+    path('reservar/<int:resource_id>/', views_front.reservar, name='reservar'),
+    path('registro/', views_front.registro, name='registro'),
     path('', views.home, name='home'),  # Página principal
     # Vista antigua: redirige al calendario interactivo
     path('calendario/<int:resource_id>/', RedirectView.as_view(pattern_name='calendario_full'), name='calendario'),

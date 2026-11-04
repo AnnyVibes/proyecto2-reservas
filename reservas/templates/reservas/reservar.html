@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static deportes %}
+
+{% block title %}Reservar · {{ resource.name }}{% endblock %}
+
+{% block content %}
+    <a href="{% url 'home' %}" class="btn-volver">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        Volver a las canchas
+    </a>
+
+    <!-- Genera la cookie csrftoken que el JS envía en la cabecera X-CSRFToken -->
+    {% csrf_token %}
+
+    <div class="tarjeta agenda mt-3">
+        <aside class="info">
+            <div class="icono"><img src="{% icono_deporte resource.name %}" alt=""></div>
+            <p class="texto-suave font-semibold">Golazo Reservas</p>
+            <h1>{{ resource.name }}</h1>
+            <p class="dato">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                60 min por turno
+            </p>
+            <p class="dato">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+                Todos los días, de 09:00 a 21:00
+            </p>
+            <p class="dato">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                ${{ resource.price_per_hour|stringformat:".2f" }} por hora
+            </p>
+            {% if resource.description %}<p class="texto-suave text-sm mt-4">{{ resource.description }}</p>{% endif %}
+            <p class="texto-suave text-sm mt-4">Puedes reservar una hora o el día completo, y repetir la reserva hasta 12 semanas al confirmar.</p>
+            <p class="texto-suave text-sm mt-2">Puedes cancelar hasta 2 horas antes desde <strong>Mis reservas</strong>.</p>
+            <a href="{% url 'calendario_full' resource.id %}" class="text-sm texto-suave hover:underline block mt-4">Ver calendario completo y reservas recurrentes</a>
+        </aside>
+
+        <section id="selector" class="selector" aria-live="polite">
+            <div>
+                <h2>Elige día y hora</h2>
+                <div class="mes">
+                    <button type="button" class="flecha" id="mes-anterior" aria-label="Mes anterior">‹</button>
+                    <span class="titulo-mes" id="titulo-mes"></span>
+                    <button type="button" class="flecha" id="mes-siguiente" aria-label="Mes siguiente">›</button>
+                </div>
+                <div class="semana" aria-hidden="true">
+                    <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+                </div>
+                <div class="dias" id="dias" role="grid" aria-label="Días del mes"></div>
+                <p id="error-carga" role="alert" class="hidden aviso aviso-error mt-3">No se pudo cargar la disponibilidad. Inténtalo de nuevo.</p>
+            </div>
+
+            <div id="panel-horas" class="horas hidden">
+                <p class="fecha-elegida" id="fecha-elegida"></p>
+                <div class="lista-horas" id="lista-horas"></div>
+            </div>
+        </section>
+
+        <section id="confirmacion" class="selector hidden" aria-live="polite">
+            <div class="text-center py-6">
+                <img src="{% static 'reservas/img/balon.svg' %}" alt="" class="mx-auto" style="width:72px">
+                <h2 class="text-2xl font-bold mt-4">¡Reserva confirmada!</h2>
+                <p class="texto-suave mt-2" id="detalle-confirmacion"></p>
+                <div class="flex flex-wrap gap-2 justify-center mt-6">
+                    <a href="{% url 'mis_reservas' %}" class="btn btn-primario">Ver mis reservas</a>
+                    <button type="button" id="otra-reserva" class="btn btn-secundario">Reservar otro horario</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    {% include 'reservas/_modal_pago.html' %}
+
+    {{ datos_reserva|json_script:"datos-reserva" }}
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'reservas/js/reservar.js' %}"></script>
+{% endblock %}
