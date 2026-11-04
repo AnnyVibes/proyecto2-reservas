@@ -1,0 +1,36 @@
+# Dueño de cada parte: GitHub pide su revisión en los PR que la tocan.
+# Paso 1 · Anllelina: ODD, especificación funcional y front de clientes
+/specs/outcomes.md                          @AnnyVibes
+/specs/requirements.md                      @AnnyVibes
+/specs/business-rules.md                    @AnnyVibes
+/specs/acceptance-criteria.md               @AnnyVibes
+/reservas/static/                           @AnnyVibes
+/reservas/templates/base.html               @AnnyVibes
+/reservas/templates/reservas/home.html      @AnnyVibes
+/reservas/templates/reservas/login.html     @AnnyVibes
+/reservas/templates/reservas/registro.html  @AnnyVibes
+/reservas/templates/reservas/reservar.html  @AnnyVibes
+/reservas/templates/reservas/_modal_pago.html @AnnyVibes
+/reservas/views_front.py                    @AnnyVibes
+/reservas/forms_cuenta.py                   @AnnyVibes
+/reservas/templatetags/                     @AnnyVibes
+
+# Paso 2 · Angélica: arquitectura, reglas de reserva y panel de KPIs
+/specs/architecture.md                      @rodriguezac
+/specs/data-model.md                        @rodriguezac
+/specs/api.md                               @rodriguezac
+/reservas/services/                         @rodriguezac
+/reservas/views_admin.py                    @rodriguezac
+/reservas/templates/reservas/admin/         @rodriguezac
+
+# Paso 3 · Eliel: pruebas, CI y documentación de entrega
+/tests/                                     @notSoEliel
+/.github/workflows/                         @notSoEliel
+/specs/implementation-plan.md               @notSoEliel
+/docs/testing.md                            @notSoEliel
+/README.md                                  @notSoEliel
+
+# Registro de IA: cada uno el suyo
+/docs/ai-log/anllelina.md                   @AnnyVibes
+/docs/ai-log/angelica.md                    @rodriguezac
+/docs/ai-log/eliel.md                       @notSoEliel
