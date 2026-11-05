@@ -52,3 +52,10 @@ Cada persona agrega sus decisiones al final, con número, fecha y autor. No se e
 - **Decisión de implementación del agente:** núcleo resumir_kpis puro sobre datos explícitos; adaptador calcular_kpis de solo lectura con cuatro consultas por período. Vista staff separada, Chart.js 4.4.1, json_script y estilos dentro de la plantilla; solo adiciones autorizadas a navegación/rutas y CODEOWNERS.
 - **Validación:** 23 pruebas nuevas para cálculos, filtros, zona horaria, permisos, datos vacíos y serialización segura. Inspección del navegador a 375 px sin desbordamiento horizontal y con tres gráficos renderizados.
 - **Decisión reservada a Angélica:** revisión del PR y merge; no se afirma que haya aprobado las decisiones técnicas durante esta ejecución.
+
+## D-11 · Validación de reservas en el admin (seguimiento de D-08)
+- **Fecha / autor:** 2026-11-04 · Anllelina Varcasia (issue #6)
+- **Hallazgo revisado:** el admin ya bloqueaba la doble reserva porque `Booking.clean()` usa `hay_conflicto`. El problema real era otro: con la cancha o una fecha vacías, `clean()` fallaba y el admin respondía con un error 500.
+- **Decisión:** `Booking.clean()` solo compara franjas cuando hay cancha, inicio y fin, y solo para reservas confirmadas. Así el formulario marca el campo que falta, y una reserva cancelada se puede guardar sin chocar con otras.
+- **Se mantiene:** los comandos de datos demo siguen con su propia comprobación de solapes, y la creación desde la app sigue pasando por `crear_reservas`.
+- **Evidencia:** `reservas/tests/test_doble_reserva_admin.py`; la prueba del formulario incompleto falla sin el cambio y pasa con él.

@@ -63,6 +63,13 @@ class Booking(models.Model):
         # Import local para evitar una importación circular (el servicio importa los modelos)
         from reservas.services.reservas import hay_conflicto
 
+        # Sin cancha o sin fechas, el formulario ya marca el campo que falta: no hay franja que comparar
+        if self.resource_id is None or self.start_time is None or self.end_time is None:
+            return
+        # Una reserva cancelada no ocupa la franja (BR-01 solo aplica a reservas activas)
+        if self.status != self.Status.CONFIRMADA:
+            return
+
         # Excluimos la propia reserva al editar
         if hay_conflicto(self.resource, self.start_time, self.end_time, excluir_id=self.pk):
             raise ValidationError("La franja horaria ya está reservada o bloqueada.")
