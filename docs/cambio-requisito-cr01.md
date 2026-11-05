@@ -19,8 +19,7 @@ quedaban vacías porque ya no daba tiempo de que otro cliente las reservara (out
 | Architecture / Development Lead | Angélica | **Anllelina** |
 | QA / DevOps Lead | Eliel | **Angélica** |
 
-La ejecución la hizo Claude Code a pedido de Anllelina, dejando cada paso en un commit separado
-para que se vea el orden. Eliel y Angélica revisan y aprueban el PR según su rol.
+
 
 ## 2. Recorrido, de la especificación al resultado
 | Paso | Qué se hizo | Archivos | Commit |
