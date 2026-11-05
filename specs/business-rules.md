@@ -1,6 +1,6 @@
 # Reglas de negocio
 
-Versión 1.0 · Responsable: Anllelina Varcasia. Las reglas BR-01 a BR-08 ya existían en el
+Versión 1.1 · Responsable: Anllelina Varcasia (cambio CR-01 liderado por Eliel). Las reglas BR-01 a BR-08 ya existían en el
 Proyecto 1 (`reservas/services/`) y aquí quedan especificadas; BR-09 es nueva.
 
 | ID | Regla | Dónde se valida |
@@ -11,7 +11,7 @@ Proyecto 1 (`reservas/services/`) y aquí quedan especificadas; BR-09 es nueva.
 | BR-04 | El fin de la reserva debe ser posterior al inicio y caer en el mismo día. | `services/reservas.py` |
 | BR-05 | Una reserva puede repetirse cada semana hasta 12 semanas más; si una semana choca, no se crea ninguna. | `services/reservas.py` |
 | BR-06 | Solo un usuario con sesión iniciada puede crear una reserva. | `views.api_crear_reserva` |
-| BR-07 | El cliente puede cancelar su reserva hasta 2 horas antes de que empiece; la franja vuelve a quedar libre. | `services/reservas.py` |
+| BR-07 | El cliente puede cancelar su reserva hasta **24 horas** antes de que empiece (antes: 2 horas, ver CR-01); la franja vuelve a quedar libre. Con exactamente 24 horas de anticipación se permite. | `services/reservas.py` |
 | BR-08 | El pago es simulado: la tarjeta 4242 4242 4242 4242 se aprueba y la 4000 0000 0000 0002 se rechaza. | `services/pagos.py` |
 | BR-09 | **Registro:** usuario único; nombre obligatorio; correo válido y único sin distinguir mayúsculas; contraseña de al menos 8 caracteres, que no sea común, solo números ni parecida al usuario, escrita dos veces igual. | `forms_cuenta.RegistroForm` |
 
@@ -19,3 +19,9 @@ Proyecto 1 (`reservas/services/`) y aquí quedan especificadas; BR-09 es nueva.
 - Un día está **disponible** si le queda al menos una franja libre y no es pasado.
 - Una franja está **libre** si no la solapa una reserva activa ni un bloqueo, y no ha empezado.
 - El front solo muestra lo libre, pero la decisión final es siempre del servidor (BR-01).
+
+## Historial de cambios
+| Versión | Fecha | Cambio | Issue |
+|---|---|---|---|
+| 1.0 | 2026-11-04 | Reglas BR-01 a BR-09. | #1 |
+| 1.1 | 2026-11-05 | **CR-01:** BR-07 pasa de 2 a 24 horas de anticipación para cancelar. | #10 |
