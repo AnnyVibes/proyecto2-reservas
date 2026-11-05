@@ -106,6 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
             fetch(`/api/reservas/${recurso}/${rango}`).then(r => r.ok ? r.json() : Promise.reject()),
             fetch(`/api/bloqueos/${recurso}/${rango}`).then(r => r.ok ? r.json() : Promise.reject()),
         ]).then(([reservas, bloqueos]) => {
+            if (diaElegido !== fecha) return;
             const ocupados = reservas.concat(bloqueos).map(e => [new Date(e.start), new Date(e.end)]);
             const ahora = new Date();
             const libres = [];
@@ -118,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             mostrarHoras(libres);
         }).catch(() => {
+            if (diaElegido !== fecha) return;
             listaHoras.innerHTML = '<p class="sin-horas">No se pudieron cargar los horarios. Inténtalo de nuevo.</p>';
         });
     }

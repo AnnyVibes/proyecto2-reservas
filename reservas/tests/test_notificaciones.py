@@ -42,6 +42,7 @@ class CorreosTests(TestCase):
         self.assertEqual(correo.to, ['ana@example.com'])
         self.assertEqual(correo.from_email, 'reservas@gestor.local')
         self.assertIn('Pista de tenis', correo.subject)
+        self.assertIn('al menos 24 horas de anticipación', correo.body)
         local = timezone.localtime(reserva.start_time)
         for texto in ('Pista de tenis', local.strftime('%d/%m/%Y'), '10:00', '11:00', f'RES-{reserva.id}'):
             with self.subTest(texto=texto):
