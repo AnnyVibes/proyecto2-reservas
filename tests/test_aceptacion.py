@@ -99,12 +99,12 @@ class AceptacionTests(EscenarioReservas, TestCase):
                 self.assertEqual(self.post_reserva(inicio, fin).status_code, 400)
         self.assertFalse(Booking.objects.exists())
 
-    def test_ac09_menos_dos_horas_no_cancela(self):
+    def test_ac09_menos_de_24_horas_no_cancela(self):
         """AC-09: el POST informa error y mantiene confirmada la reserva."""
-        reserva = self.reserva(AHORA + timedelta(hours=1), user=self.usuario)
+        reserva = self.reserva(AHORA + timedelta(hours=23), user=self.usuario)
         respuesta = self.client.post(reverse('cancelar_reserva', args=[reserva.pk]), follow=True)
         self.assertEqual(respuesta.status_code, 200)
-        self.assertContains(respuesta, '2 horas')
+        self.assertContains(respuesta, '24 horas')
         reserva.refresh_from_db()
         self.assertEqual(reserva.status, Booking.Status.CONFIRMADA)
         self.assertIsNone(reserva.cancelled_at)

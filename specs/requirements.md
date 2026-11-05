@@ -1,6 +1,6 @@
 # Requisitos (Fase 2 — SDD)
 
-Versión 1.0 · Responsable: Anllelina Varcasia · Deriva de `outcomes.md`.
+Versión 1.1 · Responsable: Anllelina Varcasia (CR-01, #10) · Deriva de `outcomes.md`.
 
 ## Funcionales
 | ID | Requisito | Outcome | Responsable |
@@ -11,7 +11,7 @@ Versión 1.0 · Responsable: Anllelina Varcasia · Deriva de `outcomes.md`.
 | RF-04 | Pedir inicio de sesión solo al confirmar, y volver a la misma cancha después. | O2 | Anllelina |
 | RF-05 | Pagar la reserva con el pago simulado, con tarjeta nueva o guardada. | O2 | Base Proyecto 1 |
 | RF-06 | Impedir reservas que se solapen con otra reserva activa o con un bloqueo (BR-01). | O1 | Angélica |
-| RF-07 | Ver y cancelar las propias reservas según BR-07. | O2 | Base Proyecto 1 |
+| RF-07 | Ver y cancelar las propias reservas según BR-07 (hasta 24 horas antes desde CR-01). | O2 | Base Proyecto 1 · CR-01 (#10) |
 | RF-08 | Panel de administración con KPIs de ocupación, ingresos, cancelaciones, horas pico, canchas más usadas y clientes nuevos. | O5 | Angélica |
 | RF-09 | Pruebas automatizadas de reglas críticas, validaciones de usuario y criterios de aceptación, con CI. | O1–O4 | Eliel |
 

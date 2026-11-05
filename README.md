@@ -28,7 +28,7 @@ FullCalendar 6.1.11 y Chart.js 4.4.1. Dependencias fijadas en `requirements.txt`
 
 - Registro con validaciones, inicio de sesión y retorno a la cancha.
 - Reserva en tres pasos, calendario mensual y horas libres; día completo si está libre.
-- Horario 09:00–21:00, bloqueos, cancelación con al menos dos horas y hasta 12 semanas adicionales.
+- Horario 09:00–21:00, bloqueos, cancelación con al menos 24 horas (cambio de requisito CR-01, ver [docs/cambio-requisito-cr01.md](docs/cambio-requisito-cr01.md)) y hasta 12 semanas adicionales.
 - Reserva/pago y repeticiones atómicos. Tarjetas simuladas: solo se guardan titular,
   marca, últimos cuatro dígitos, vencimiento y token, nunca PAN completo ni CVV.
 - Mis reservas, Mis tarjetas, correos en consola y panel histórico de demanda.

@@ -70,3 +70,8 @@ Cada persona agrega sus decisiones al final, con número, fecha y autor. No se e
 - **Decisión de implementación del agente:** CI Ubuntu/Python 3.12 por cada push y PR hacia main, usando solo dependencias fijadas y el runner de Django. Los tests HTTP se complementan con comprobación de navegador para AC-01/02, sin afirmar que CI ejecute JavaScript.
 - **Validación del agente:** selección de día/hora como visitante, login con retorno a la misma cancha y reserva local con pago simulado de $10.00, confirmada también en BD. La captura queda fuera de Git.
 - **Decisión reservada a Eliel:** revisión y merge del PR. El cambio de requisito del siguiente ciclo requiere un cambio concreto del equipo y no se inventa durante este paso.
+
+## D-14 · Cambio de requisito CR-01: cancelar con 24 horas de anticipación
+- **Fecha / responsables:** 2026-11-05 · Ciclo 2 con roles rotados: Eliel (Spec Lead), Anllelina (Desarrollo), Angélica (QA). Ejecución por Claude Code a pedido de Anllelina (issue #10).
+- **Decisión:** BR-07 pasa de 2 a 24 horas; con exactamente 24 horas de anticipación se permite cancelar. Se cambia la constante `HORAS_MIN_CANCELACION` y los textos de la app, sin tocar el resto de las reglas.
+- **Orden seguido:** especificación → criterio AC-09 → plan → pruebas en rojo (3 fallas) → código → pruebas en verde (185 OK). Evidencia en `docs/cambio-requisito-cr01.md`.

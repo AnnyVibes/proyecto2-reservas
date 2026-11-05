@@ -12,7 +12,7 @@ from reservas.services.notificaciones import enviar_cancelacion
 FRANJA_INICIO = 9    # 09:00
 FRANJA_FIN = 21      # 21:00
 MAX_SEMANAS_REPETICION = 12
-HORAS_MIN_CANCELACION = 2
+HORAS_MIN_CANCELACION = 24   # BR-07 v1.1 (CR-01, #10): antes 2 horas
 
 
 class ReservaInvalida(Exception):
@@ -97,7 +97,7 @@ def _motivo_no_cancelable(booking, ahora):
 
 
 def puede_cancelar(booking, ahora=None):
-    """Indica si la reserva está confirmada y empieza dentro de 2 horas o más."""
+    """Indica si la reserva está confirmada y empieza dentro de HORAS_MIN_CANCELACION horas o más."""
     return _motivo_no_cancelable(booking, ahora or timezone.now()) is None
 
 

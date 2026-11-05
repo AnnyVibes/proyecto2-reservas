@@ -1,6 +1,6 @@
 # Criterios de aceptación
 
-Versión 1.0 · Responsable: Anllelina Varcasia. Cada criterio indica su requisito y sus pruebas.
+Versión 1.1 · Responsable: Anllelina Varcasia; AC-09 cambia con CR-01 (#10). Cada criterio indica su requisito y sus pruebas.
 Las pruebas de `reservas/tests/` se escribieron en los pasos 1 y 2; las de `tests/` las agregó
 Eliel en el paso 3, con un caso por criterio en `tests/test_aceptacion.py` (`test_ac01_…` a `test_ac10_…`).
 
@@ -14,7 +14,7 @@ Eliel en el paso 3, con un caso por criterio en `tests/test_aceptacion.py` (`tes
 | AC-06 | RF-06, BR-01 | Dada una reserva activa de 10:00 a 11:00, cuando otro usuario reserva esa cancha de 10:00 a 11:00, entonces recibe un error 409 y no se crea la reserva. | `reservas/tests/test_api_crear_reserva.py`, `reservas/tests/test_doble_reserva_admin.py`; `tests/test_doble_reserva.py` (prueba dedicada), `tests/test_aceptacion.py` |
 | AC-07 | RF-06, BR-01 | Dada una reserva cancelada, cuando alguien reserva esa misma franja, entonces se permite. | `reservas/tests/test_mis_reservas.py`; `tests/test_doble_reserva.py`, `tests/test_aceptacion.py` |
 | AC-08 | BR-02, BR-03 | Dada una franja fuera de 09:00–21:00 o en el pasado, cuando se intenta reservar, entonces se rechaza. | `reservas/tests/test_api_crear_reserva.py`; `tests/test_reglas.py`, `tests/test_aceptacion.py` |
-| AC-09 | RF-07, BR-07 | Dada una reserva que empieza en menos de 2 horas, cuando el cliente intenta cancelarla, entonces se rechaza. | `reservas/tests/test_mis_reservas.py`; `tests/test_reglas.py`, `tests/test_aceptacion.py` |
+| AC-09 | RF-07, BR-07 | Dada una reserva que empieza en menos de **24 horas**, cuando el cliente intenta cancelarla, entonces se rechaza y la app indica el plazo de 24 horas; con 24 horas o más, se cancela. | `reservas/tests/test_mis_reservas.py`; `tests/test_reglas.py`, `tests/test_aceptacion.py` |
 | AC-10 | RF-08 | Dado un administrador, cuando abre el panel, entonces ve los KPIs con datos del rango elegido. | `reservas/tests/test_kpis.py` (paso 2); `tests/test_aceptacion.py` |
 
 La matriz completa de criterio a prueba y la evidencia de la CI están en `docs/testing.md`.
