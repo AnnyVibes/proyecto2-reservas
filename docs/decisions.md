@@ -27,28 +27,28 @@ Cada persona agrega sus decisiones al final, con número, fecha y autor. No se e
 - **Decisión:** el balón, la cancha y los íconos de cada deporte se dibujaron como SVG propios en `reservas/static/reservas/img/`.
 - **Motivo:** no hay que descargar imágenes de terceros ni preocuparse por licencias, y se ven nítidas en cualquier tamaño.
 
-## D-07 · Ajustes tras la primera revisión del front
-- **Fecha / autor:** 2026-11-04 · Anllelina Varcasia
-- **Decisión:** el calendario completo usa la misma tarjeta que la reserva paso a paso, con pasos y leyenda; los botones de volver y actualizar tienen un estilo común; la reserva paso a paso ofrece el día completo; se quitaron emojis de la portada y la zona horaria; Mis reservas pasa de tabla a tarjetas.
-- **Datos demo:** `crear_reservas_demo` deja de crear la cancha "Pista Pádel 1" y usa la cancha de pádel del fixture `pistas`, para no mostrar una cancha repetida.
-
 ## D-06 · Registro de clientes en archivos nuevos
 - **Fecha / autor:** 2026-11-04 · Anllelina Varcasia
 - **Decisión:** el registro y la reserva paso a paso viven en `views_front.py` y `forms_cuenta.py`, en lugar de ampliar `views.py`.
 - **Motivo:** así Angélica puede trabajar en las vistas del panel sin tocar los mismos archivos.
 
+## D-07 · Ajustes tras la primera revisión del front
+- **Fecha / autor:** 2026-11-04 · Anllelina Varcasia
+- **Decisión:** el calendario completo usa la misma tarjeta que la reserva paso a paso, con pasos y leyenda; los botones de volver y actualizar tienen un estilo común; la reserva paso a paso ofrece el día completo; se quitaron emojis de la portada y la zona horaria; Mis reservas pasa de tabla a tarjetas.
+- **Datos demo:** `crear_reservas_demo` deja de crear la cancha "Pista Pádel 1" y usa la cancha de pádel del fixture `pistas`, para no mostrar una cancha repetida.
+
 ## D-08 · Conservar tecnología y la regla de solape existente
-- **Fecha / responsable:** 2026-11-04 · Paso de Angélica; ejecución técnica por Codex, pendiente de revisión de Angélica.
+- **Fecha / responsable:** 2026-11-04 · Paso de Angélica; ejecución técnica por Codex; Angélica la revisó e integró con el PR #5.
 - **Decisión de implementación del agente:** mantener Python/Django/SQLite y las dependencias existentes; documentar las capas y el modelo real antes de implementar el panel. No alterar hay_conflicto ni crear_reservas para preservar el contrato 409 y BR-01.
 - **Límite:** los comandos demo y el guardado del admin no pasan por crear_reservas. Se dejó el hallazgo en el issue #2 porque modificar esos archivos no está autorizado. No se atribuye una garantía de exclusión concurrente a SQLite.
 
 ## D-09 · Fechas y denominadores explícitos para KPIs
-- **Fecha / responsable:** 2026-11-04 · Paso de Angélica; propuesta implementada por Codex, pendiente de revisión de Angélica.
+- **Fecha / responsable:** 2026-11-04 · Paso de Angélica; propuesta implementada por Codex; Angélica la revisó e integró con el PR #5.
 - **Decisión de implementación del agente:** fechas locales inclusivas, últimos 30 días incluido hoy, máximo 366 días; variación frente al período anterior de igual duración. Capacidad teórica de 12 horas por día y cancha sin restar bloqueos. Reservas/cancelaciones por fecha de inicio; ingresos por created_at del pago aprobado; ticket por pago aprobado. Clientes nuevos globales, excluyendo staff/superusuarios. Se muestran todos los empates en horas pico.
 - **Motivo:** explicitar métricas que el enunciado no detalla y evitar mezclar cobros con fechas de juego. Las cancelaciones no implican reembolsos en el modelo existente.
 
 ## D-10 · Cálculo puro separado de lectura y panel sin archivos estáticos nuevos
-- **Fecha / responsable:** 2026-11-04 · Paso de Angélica; propuesta implementada por Codex, pendiente de revisión de Angélica.
+- **Fecha / responsable:** 2026-11-04 · Paso de Angélica; propuesta implementada por Codex; Angélica la revisó e integró con el PR #5.
 - **Decisión de implementación del agente:** núcleo resumir_kpis puro sobre datos explícitos; adaptador calcular_kpis de solo lectura con cuatro consultas por período. Vista staff separada, Chart.js 4.4.1, json_script y estilos dentro de la plantilla; solo adiciones autorizadas a navegación/rutas y CODEOWNERS.
 - **Validación:** 23 pruebas nuevas para cálculos, filtros, zona horaria, permisos, datos vacíos y serialización segura. Inspección del navegador a 375 px sin desbordamiento horizontal y con tres gráficos renderizados.
 - **Decisión reservada a Angélica:** revisión del PR y merge; no se afirma que haya aprobado las decisiones técnicas durante esta ejecución.
@@ -61,12 +61,12 @@ Cada persona agrega sus decisiones al final, con número, fecha y autor. No se e
 - **Evidencia:** `reservas/tests/test_doble_reserva_admin.py`; la prueba del formulario incompleto falla sin el cambio y pasa con él.
 
 ## D-12 · Pruebas de contrato separadas por responsabilidad
-- **Fecha / responsable:** 2026-11-05 · Paso de Eliel; ejecución técnica por Codex, pendiente de revisión de Eliel.
+- **Fecha / responsable:** 2026-11-05 · Paso de Eliel; ejecución técnica por Codex; Eliel la revisó e integró con el PR #8.
 - **Decisión de implementación del agente:** agregar 47 pruebas en `tests/` sin tocar las 138 existentes ni la app. Cubrir BR-01 en servicio y API, ausencia de efectos de pago tras conflicto, límites exactos de horario/repetición/cancelación, BR-09 y AC-01 a AC-10. Usar reloj fijo y datos aislados para no depender del calendario real ni de los usuarios demo.
 - **Evidencia:** línea base 138 OK; suite ampliada 185 OK. Las funciones puras de KPIs ya estaban cubiertas en el paso 2 y su evidencia se enlaza sin duplicarlas.
 
 ## D-13 · Distinguir CI, comprobación de navegador y decisión humana
-- **Fecha / responsable:** 2026-11-05 · Paso de Eliel; propuesta ejecutada por Codex, pendiente de revisión de Eliel.
+- **Fecha / responsable:** 2026-11-05 · Paso de Eliel; propuesta ejecutada por Codex; Eliel la revisó e integró con el PR #8.
 - **Decisión de implementación del agente:** CI Ubuntu/Python 3.12 por cada push y PR hacia main, usando solo dependencias fijadas y el runner de Django. Los tests HTTP se complementan con comprobación de navegador para AC-01/02, sin afirmar que CI ejecute JavaScript.
 - **Validación del agente:** selección de día/hora como visitante, login con retorno a la misma cancha y reserva local con pago simulado de $10.00, confirmada también en BD. La captura queda fuera de Git.
 - **Decisión reservada a Eliel:** revisión y merge del PR. El cambio de requisito del siguiente ciclo requiere un cambio concreto del equipo y no se inventa durante este paso.
