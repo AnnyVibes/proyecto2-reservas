@@ -43,6 +43,19 @@ se mantienen sin modificaciones. El paso 3 aporta 47 pruebas, para 185 en total.
    actualización previa de `specs/` y roles rotados. Hace falta definir el cambio
    concreto con el equipo; no se inventa un requisito para anticipar ese ciclo.
 
+## Ciclo 2 · Cambio de requisito CR-01 (issue #10)
+
+Cambio solicitado: cancelar con al menos **24 horas** de anticipación en lugar de 2 (BR-07, RF-07, AC-09).
+Roles rotados: Eliel · Spec Lead, Anllelina · Desarrollo, Angélica · QA. Rama `anllelina/10-cambio-24-horas`.
+
+| Orden | Tarea | Archivos | Evidencia |
+|---|---|---|---|
+| 1 | Actualizar especificación y criterio | `specs/business-rules.md` (v1.1), `requirements.md`, `acceptance-criteria.md` | Commit "CR-01 paso 1" |
+| 2 | Actualizar este plan | `specs/implementation-plan.md` | Commit "CR-01 paso 2" |
+| 3 | Cambiar las pruebas al nuevo plazo y verlas fallar | `tests/test_reglas.py`, `tests/test_aceptacion.py`, `reservas/tests/test_mis_reservas.py`, `reservas/tests/test_notificaciones.py` | Ejecución en rojo en `docs/cambio-requisito-cr01.md` |
+| 4 | Cambiar el código | `HORAS_MIN_CANCELACION = 24` en `reservas/services/reservas.py`; textos de `mis_reservas.html` y `reservar.html` | Commit "CR-01 paso 4" |
+| 5 | Ver las pruebas en verde y registrar | `docs/cambio-requisito-cr01.md`, `docs/testing.md` | Suite completa y CI en verde |
+
 ## Límites de la evidencia
 
 Las pruebas HTTP no ejecutan JavaScript; la comprobación de navegador de AC-01/02
