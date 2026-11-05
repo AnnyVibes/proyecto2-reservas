@@ -10,7 +10,7 @@ ejecutada; no reemplaza las especificaciones funcionales ni técnicas de sus aut
 |---|---|---|---|---|
 | #1 | Anllelina · Product / Spec Lead | Outcomes, requisitos, reglas, criterios, front público y registro | Base Proyecto 1 | PR #4 integrado; issue #1 cerrado |
 | #2 | Angélica · Architecture / Development Lead | Arquitectura, datos, API, regla de solapes y KPIs staff | #1 integrado | PR #5 integrado; issue #2 cerrado |
-| #3 | Eliel · QA / DevOps Lead | `tests/`, workflow, plan, guía de pruebas, README y registro de IA | #2 integrado | Rama `eliel/3-pruebas-ci`; revisión y merge de Eliel pendientes |
+| #3 | Eliel · QA / DevOps Lead | `tests/`, workflow, plan, guía de pruebas, README y registro de IA | #2 integrado | PR #8 integrado; issue #3 cerrado |
 
 La rama del paso 3 parte de `main` en `6d25eb4`, que también contiene el PR #7
 (validación del admin, issue #6). El código de la app y las 138 pruebas heredadas
