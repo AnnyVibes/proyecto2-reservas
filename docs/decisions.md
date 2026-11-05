@@ -27,15 +27,15 @@ Cada persona agrega sus decisiones al final, con número, fecha y autor. No se e
 - **Decisión:** el balón, la cancha y los íconos de cada deporte se dibujaron como SVG propios en `reservas/static/reservas/img/`.
 - **Motivo:** no hay que descargar imágenes de terceros ni preocuparse por licencias, y se ven nítidas en cualquier tamaño.
 
-## D-07 · Ajustes tras la primera revisión del front
-- **Fecha / autor:** 2026-11-04 · Anllelina Varcasia
-- **Decisión:** el calendario completo usa la misma tarjeta que la reserva paso a paso, con pasos y leyenda; los botones de volver y actualizar tienen un estilo común; la reserva paso a paso ofrece el día completo; se quitaron emojis de la portada y la zona horaria; Mis reservas pasa de tabla a tarjetas.
-- **Datos demo:** `crear_reservas_demo` deja de crear la cancha "Pista Pádel 1" y usa la cancha de pádel del fixture `pistas`, para no mostrar una cancha repetida.
-
 ## D-06 · Registro de clientes en archivos nuevos
 - **Fecha / autor:** 2026-11-04 · Anllelina Varcasia
 - **Decisión:** el registro y la reserva paso a paso viven en `views_front.py` y `forms_cuenta.py`, en lugar de ampliar `views.py`.
 - **Motivo:** así Angélica puede trabajar en las vistas del panel sin tocar los mismos archivos.
+
+## D-07 · Ajustes tras la primera revisión del front
+- **Fecha / autor:** 2026-11-04 · Anllelina Varcasia
+- **Decisión:** el calendario completo usa la misma tarjeta que la reserva paso a paso, con pasos y leyenda; los botones de volver y actualizar tienen un estilo común; la reserva paso a paso ofrece el día completo; se quitaron emojis de la portada y la zona horaria; Mis reservas pasa de tabla a tarjetas.
+- **Datos demo:** `crear_reservas_demo` deja de crear la cancha "Pista Pádel 1" y usa la cancha de pádel del fixture `pistas`, para no mostrar una cancha repetida.
 
 ## D-08 · Conservar tecnología y la regla de solape existente
 - **Fecha / responsable:** 2026-11-04 · Paso de Angélica; ejecución técnica por Codex, pendiente de revisión de Angélica.
