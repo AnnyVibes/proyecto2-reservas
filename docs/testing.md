@@ -116,3 +116,18 @@ Si apareciera un fallo real en la app, se mantendría como regresión documentad
 se reportaría en #3 con su BR/AC y lo corregiría el responsable del archivo.
 Los tests no prueban carreras simultáneas ni exclusión de intervalos concurrentes
 por SQLite; ese límite sigue documentado en `specs/architecture.md`.
+
+## Cambio de requisito CR-01 (issue #10)
+
+BR-07 pasó de 2 a 24 horas de anticipación para cancelar. Pruebas actualizadas antes del código:
+`tests/test_reglas.py` (umbral exacto de 24 horas y 24 horas menos un segundo),
+`tests/test_aceptacion.py::test_ac09_menos_de_24_horas_no_cancela`,
+`reservas/tests/test_mis_reservas.py` y `reservas/tests/test_notificaciones.py`.
+
+| Momento | Resultado |
+|---|---|
+| Pruebas actualizadas, código en 2 horas | 45 pruebas, **3 fallas esperadas** |
+| Código en 24 horas | **185 pruebas, OK** |
+
+El recorrido completo, con la salida en rojo y en verde, está en
+[docs/cambio-requisito-cr01.md](cambio-requisito-cr01.md).
