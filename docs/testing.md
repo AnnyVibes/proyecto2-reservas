@@ -98,8 +98,16 @@ Se ejecuta en cada push y en cada pull request hacia `main`, Ubuntu y Python 3.1
 Instala exclusivamente `requirements.txt` y ejecuta `python manage.py test`.
 Permiso del workflow: lectura de contenidos; timeout: 10 minutos.
 
-Evidencia remota: pendiente de la primera ejecución tras publicar esta rama.
-Se actualizará con el enlace y resultado observado antes de entregar el PR.
+Primera ejecución remota verificada: [run 42083284757](https://github.com/AnnyVibes/proyecto2-reservas/actions/runs/42083284757),
+evento push, commit `b8f52b1`, Ubuntu/Python 3.12, **185 pruebas, OK**
+(2026-11-05; 66.728 s de tests). El workflow terminó en `success`.
+El PR de entrega es [#8](https://github.com/AnnyVibes/proyecto2-reservas/pull/8);
+los checks de su última revisión se consultan allí.
+
+La primera ejecución advirtió que checkout v4 y setup-python v5 usaban Node 20
+obsoleto. Se actualizaron a las versiones oficiales checkout v7.0.1 y
+setup-python v7.1.0; la comprobación de la revisión final se realiza antes de
+entregar el PR. No se cambió la versión de Python ni las dependencias de la app.
 
 ## Alcance y fallos conocidos
 
