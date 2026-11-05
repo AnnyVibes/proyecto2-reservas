@@ -79,18 +79,18 @@ class ReglasTests(EscenarioReservas, TestCase):
         reserva.refresh_from_db()
         self.assertEqual(reserva.status, Booking.Status.CONFIRMADA)
 
-    def test_br07_exactamente_dos_horas_permitido_y_libera(self):
-        """BR-07: el umbral exacto de dos horas se admite y libera la franja."""
-        reserva = self.reserva(AHORA + timedelta(hours=2), user=self.usuario)
+    def test_br07_exactamente_24_horas_permitido_y_libera(self):
+        """BR-07 v1.1 (CR-01): el umbral exacto de 24 horas se admite y libera la franja."""
+        reserva = self.reserva(AHORA + timedelta(hours=24), user=self.usuario)
         cancelar_reserva(reserva)
         reserva.refresh_from_db()
         self.assertEqual(reserva.status, Booking.Status.CANCELADA)
         self.assertEqual(reserva.cancelled_at, AHORA)
-        self.assertEqual(self.post_reserva(reserva.start_time, reserva.end_time).status_code, 201)
+        self.assertFalse(Booking.objects.activas().filter(pk=reserva.pk).exists())
 
     def test_br07_un_segundo_fuera_de_plazo(self):
-        """BR-07: dos horas menos un segundo se rechaza sin alterar estado."""
-        reserva = self.reserva(AHORA + timedelta(hours=2, seconds=-1), user=self.usuario)
+        """BR-07 v1.1 (CR-01): 24 horas menos un segundo se rechaza sin alterar estado."""
+        reserva = self.reserva(AHORA + timedelta(hours=24, seconds=-1), user=self.usuario)
         with self.assertRaises(CancelacionNoPermitida):
             cancelar_reserva(reserva)
         reserva.refresh_from_db()

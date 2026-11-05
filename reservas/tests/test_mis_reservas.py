@@ -73,7 +73,7 @@ class MisReservasTests(TestCase):
     # --- Cancelación ---
 
     def test_cancelacion_valida(self):
-        """Una reserva propia con 2 horas o más de anticipación se cancela."""
+        """Una reserva propia con 24 horas o más de anticipación se cancela (BR-07, CR-01)."""
         reserva = self.reserva(48)
         response = self.cancelar(reserva, follow=True)
 
@@ -85,14 +85,14 @@ class MisReservasTests(TestCase):
         self.assertIn('cancelada', self.mensajes(response)[0].lower())
 
     def test_cancelacion_fuera_de_plazo(self):
-        """Con menos de 2 horas de anticipación no se puede cancelar y se informa el error."""
-        reserva = self.reserva(1)
+        """Con menos de 24 horas de anticipación no se puede cancelar y se informa el error (CR-01)."""
+        reserva = self.reserva(23)
         response = self.cancelar(reserva, follow=True)
 
         reserva.refresh_from_db()
         self.assertEqual(reserva.status, Booking.Status.CONFIRMADA)
         self.assertIsNone(reserva.cancelled_at)
-        self.assertIn('2 horas', self.mensajes(response)[0])
+        self.assertIn('24 horas', self.mensajes(response)[0])
 
     def test_no_se_cancela_reserva_pasada(self):
         """Una reserva que ya pasó no se puede cancelar."""

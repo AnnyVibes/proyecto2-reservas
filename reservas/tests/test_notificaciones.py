@@ -80,8 +80,9 @@ class CorreosTests(TestCase):
 
     def test_cancelacion_envia_correo(self):
         """Al cancelar se envía un correo de cancelación con la referencia."""
+        inicio = franja(2, 10)   # con más de 24 horas de anticipación (BR-07, CR-01)
         reserva = Booking.objects.create(user=self.user, resource=self.resource,
-                                         start_time=self.inicio, end_time=self.inicio + timedelta(hours=1))
+                                         start_time=inicio, end_time=inicio + timedelta(hours=1))
         with self.captureOnCommitCallbacks(execute=True):
             self.client.post(reverse('cancelar_reserva', args=[reserva.id]))
         self.assertEqual(len(mail.outbox), 1)
@@ -89,7 +90,7 @@ class CorreosTests(TestCase):
         self.assertIn(f'RES-{reserva.id}', mail.outbox[0].body)
 
     def test_cancelacion_no_permitida_no_envia_correo(self):
-        """Si la cancelación no se permite (menos de 2 horas) no se envía correo."""
+        """Si la cancelación no se permite (menos de 24 horas) no se envía correo."""
         inicio = timezone.now() + timedelta(hours=1)
         reserva = Booking.objects.create(user=self.user, resource=self.resource,
                                          start_time=inicio, end_time=inicio + timedelta(hours=1))
