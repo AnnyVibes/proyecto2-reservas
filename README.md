@@ -1,141 +1,156 @@
-# 🏟️ Gestor de Reservas de Pistas y Salas
+# Proyecto 2 · Golazo Reservas
 
-Un sistema web desarrollado con **Django** para gestionar reservas de recursos como pistas de pádel, tenis, fútbol o salas multiusos.  
-Incluye un **calendario interactivo con FullCalendar**, gestión de usuarios, validación de solapamientos, reservas recurrentes, bloqueos administrativos y un panel de administración completo.
+Sistema de reservas de canchas de fútbol, pádel, tenis y baloncesto, continuación
+del Proyecto 1 indicado por el profesor. El cliente consulta disponibilidad sin
+sesión, elige día y hora y confirma con pago simulado. El administrador consulta
+ocupación, ingresos, cancelaciones, horas pico, ranking y clientes nuevos.
 
----
+## Método y equipo
 
-## **Características principales**
+El proceso sigue **ODD → SDD → código → pruebas**: primero se definen los outcomes,
+luego requisitos, reglas y criterios, y después arquitectura, implementación y validación.
 
-### **Modelos implementados**
-- **Resource** – Cada pista, con su precio por hora (`price_per_hour`).
-- **Booking** – Reserva de un usuario, con estado `confirmada` / `cancelada`.
-- **Availability (Bloqueos)** – Franjas en las que una pista no se puede reservar.
-- **PaymentMethod** – Tarjeta guardada (solo titular, marca, últimos 4 dígitos, vencimiento y token).
-- **Payment** – Pago simulado de cada reserva.
+| Paso | Persona | Rol / responsabilidad |
+|---|---|---|
+| #1 | Anllelina Varcasia · `AnnyVibes` | Product / Spec Lead: outcomes, especificación funcional y front |
+| #2 | Angélica Rodríguez · `rodriguezac` | Architecture / Development Lead: arquitectura, reservas y KPIs |
+| #3 | Eliel Garcia · `notSoEliel` | QA / DevOps Lead: pruebas, CI y documentación de entrega |
 
-### **Funcionalidades clave**
-- 📅 **Calendario mensual coloreado** por disponibilidad (libre, parcial, completo, pasado), con vistas de semana y día, en español.
-- 💳 **Pago simulado** en un modal, con tarjeta nueva o guardada ("Guardar mis datos"). Nunca se guarda el número completo ni el CVV.
-- 🗂️ **Mis reservas**: próximas y pasadas, con cancelación hasta 2 horas antes. La franja cancelada queda libre.
-- ✉️ **Correos** de confirmación y cancelación (en desarrollo se muestran en la consola).
-- 📈 **Panel de demanda** para staff: histórico semanal, previsión por promedio móvil de 4 semanas y mapa de calor por día y hora.
-- ⛔ **Validación en el servidor**: solapes, bloqueos, horario 09:00–21:00, fechas pasadas y reservas recurrentes atómicas (máx. 12 semanas).
-- 👨‍💼 **Django Admin** para pistas, reservas, bloqueos, tarjetas y pagos.
+Cada paso parte del anterior integrado en `main`; los archivos tienen responsables
+en [CODEOWNERS](.github/CODEOWNERS). La integración del paso 3 requiere revisión
+de Eliel. El siguiente ciclo usa la [plantilla de cambio de requisito](.github/ISSUE_TEMPLATE/cambio-de-requisito.md)
+y roles rotados.
 
-### **Tarjetas de prueba (pago simulado)**
-| Número | Resultado |
-|---|---|
-| `4242 4242 4242 4242` | Aprobada |
-| `4000 0000 0000 0002` | Siempre rechazada |
+## Tecnología y funcionalidades
 
-Cualquier vencimiento futuro y un CVV de 3 dígitos.
+Python 3.12 o superior, Django 5.2.18, SQLite, plantillas Django, Tailwind por CDN,
+FullCalendar 6.1.11 y Chart.js 4.4.1. Dependencias fijadas en `requirements.txt`.
 
----
+- Registro con validaciones, inicio de sesión y retorno a la cancha.
+- Reserva en tres pasos, calendario mensual y horas libres; día completo si está libre.
+- Horario 09:00–21:00, bloqueos, cancelación con al menos dos horas y hasta 12 semanas adicionales.
+- Reserva/pago y repeticiones atómicos. Tarjetas simuladas: solo se guardan titular,
+  marca, últimos cuatro dígitos, vencimiento y token, nunca PAN completo ni CVV.
+- Mis reservas, Mis tarjetas, correos en consola y panel histórico de demanda.
+- KPIs filtrados por fecha y cancha en `/panel/`, solo para staff activo.
+- 185 pruebas, incluidas 47 del paso 3; CI en Ubuntu con Python 3.12.
 
-## **Tecnologías utilizadas**
+## Instalación local
 
-- **Backend:** Django 5 (Python 3.12)
-- **Frontend:** plantillas de Django con una plantilla base común, Tailwind (CDN), FullCalendar 6.1.11 y Chart.js 4.4.1 (CDN)
-- **Base de datos:** SQLite (por defecto, fácil de cambiar a MySQL o PostgreSQL)
-- **Autenticación:** Sistema de usuarios de Django
-- **UI:** Diseño minimalista con **navbar**, cards y calendario interactivo
+Requisitos: Git, Python 3.12+ y acceso al repositorio. Cada persona utiliza su propia
+cuenta e identidad de Git. La BD y `venv/` no se versionan.
 
----
+### Windows · PowerShell
 
-## Enfoque del Proyecto
-
-Este proyecto está centrado principalmente en el aprendizaje y la práctica de **Django**.  
-Mi objetivo ha sido entender la arquitectura del framework, el manejo de vistas, URLs, modelos, templates y la interacción con la base de datos.  
-
-Por este motivo, el **diseño visual** no ha sido la prioridad en esta fase del desarrollo, ya que mi atención ha estado enfocada en construir una aplicación funcional y bien estructurada en cuanto a lógica y backend.
-
-
-
-## **Instalación**
-
-Requisitos: Python 3.12 o superior.
-
-### **1. Clonar el repositorio**
-
-```bash
-git clone https://github.com/AnnyVibes/proyecto1-reservas.git
-cd proyecto1-reservas
-```
-
-### **2. Crear y activar el entorno virtual**
-
-```bash
-python -m venv venv
-source venv/Scripts/activate   # Windows (Git Bash)
-source venv/bin/activate       # Linux/Mac
-```
-
-### **3. Instalar dependencias**
-
-```bash
-pip install -r requirements.txt
-```
-
-### **4. Crear la base de datos**
-
-La base de datos (`db.sqlite3`) no se versiona: cada persona crea la suya.
-
-```bash
+```powershell
+git clone https://github.com/AnnyVibes/proyecto2-reservas.git
+cd proyecto2-reservas
+py -3.12 -m venv venv
+.\venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
 python manage.py migrate
-```
-
-### **5. Cargar las pistas**
-
-```bash
 python manage.py loaddata pistas
-```
-
-### **6. Crear un superusuario (para acceder al panel admin)**
-
-```bash
+python manage.py crear_reservas_demo
 python manage.py createsuperuser
-```
-
-### **7. Ejecutar el servidor**
-
-```bash
 python manage.py runserver
 ```
 
-Accede en tu navegador a http://127.0.0.1:8000/
+Si la política local impide activar el entorno, se puede usar directamente
+`.\venv\Scripts\python.exe` en lugar de `python` en los comandos siguientes a `venv`.
 
-### **8. Ejecutar las pruebas**
+### Windows · Git Bash
+
+```bash
+git clone https://github.com/AnnyVibes/proyecto2-reservas.git
+cd proyecto2-reservas
+py -3.12 -m venv venv
+source venv/Scripts/activate
+python -m pip install -r requirements.txt
+python manage.py migrate
+python manage.py loaddata pistas
+python manage.py crear_reservas_demo
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+### macOS / Linux
+
+```bash
+git clone https://github.com/AnnyVibes/proyecto2-reservas.git
+cd proyecto2-reservas
+python3 -m venv venv
+source venv/bin/activate
+python -m pip install -r requirements.txt
+python manage.py migrate
+python manage.py loaddata pistas
+python manage.py crear_reservas_demo
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+Abrir [la aplicación local](http://127.0.0.1:8000/). Para otro puerto:
+`python manage.py runserver 8002` y abrir `http://127.0.0.1:8002/`.
+
+## Datos de demostración y pago
+
+`python manage.py crear_reservas_demo` crea `demo_user`, contraseña inicial
+`demo1234`, y hasta 15 reservas futuras en pádel. Si el usuario ya existe no cambia
+su contraseña; reemplaza solo sus reservas. No ejecutarlo contra datos que quieras
+conservar de esa cuenta. Los tests generan datos separados y no necesitan este comando.
+
+El administrador local se crea con `createsuperuser`; no hay credenciales de admin
+universales ni incluidas en los fixtures.
+
+| Tarjeta ficticia | Resultado |
+|---|---|
+| `4242 4242 4242 4242` | Aprobada |
+| `4000 0000 0000 0002` | Rechazada; no persiste reserva ni pago |
+
+Usar vencimiento futuro, titular no vacío y CVV ficticio de 3–4 dígitos.
+El backend de correo predeterminado imprime en consola; no requiere SMTP real.
+Para el panel de demanda se puede generar histórico local reproducible:
+
+```bash
+python manage.py generar_historico --semanas 26 --seed 42
+```
+
+## Pruebas y CI
 
 ```bash
 python manage.py test
+python manage.py test tests
+python manage.py test tests.test_doble_reserva -v 2
 ```
 
-### **9. (Opcional) Datos de ejemplo**
+El runner crea y destruye su BD temporal. El workflow
+[Pruebas Django](.github/workflows/tests.yml) ejecuta la suite en cada push y PR a `main`.
+Los resultados, evidencia de CI, matriz AC→test y comprobación de navegador se detallan
+en [la guía de pruebas](docs/testing.md). La suite HTTP no ejecuta JavaScript.
 
-```bash
-python manage.py generar_historico --semanas 26 --seed 42   # histórico para el panel de demanda
-python manage.py generar_historico --semanas 0 --reset      # borra solo ese histórico
-python manage.py crear_reservas_demo                        # usuario demo_user con reservas futuras
+## Estructura
+
+```text
+gestor_reservas/       Configuración Django
+reservas/             Modelos, vistas, servicios, plantillas y recursos propios
+reservas/tests/       Pruebas heredadas de los pasos anteriores
+tests/                Pruebas de contrato y aceptación de Eliel
+specs/                Outcomes, requisitos, reglas, aceptación, arquitectura y plan
+docs/                 Pruebas, decisiones y registros de IA
+.github/workflows/    Integración continua
+.github/CODEOWNERS    Responsables por archivo
 ```
 
-### **Correo**
+## Documentación
 
-Por defecto los correos se imprimen en la consola de `runserver`. Para usar un servidor SMTP real,
-define la variable de entorno `EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend` y las
-variables `EMAIL_HOST`, `EMAIL_PORT`, etc.
+- [Outcomes](specs/outcomes.md), [requisitos](specs/requirements.md),
+  [reglas de negocio](specs/business-rules.md) y [criterios de aceptación](specs/acceptance-criteria.md).
+- [Arquitectura](specs/architecture.md), [modelo de datos](specs/data-model.md)
+  y [contrato HTTP](specs/api.md).
+- [Plan por persona y dependencias](specs/implementation-plan.md).
+- [Pruebas, trazabilidad y CI](docs/testing.md).
+- [Decisiones](docs/decisions.md) y registros de IA:
+  [Anllelina](docs/ai-log/anllelina.md), [Angélica](docs/ai-log/angelica.md),
+  [Eliel](docs/ai-log/eliel.md).
 
-Uso de la aplicación
-Panel de administración:
-Accede a http://127.0.0.1:8000/admin/ para crear recursos (pistas) y gestionar reservas manualmente.
-
-Home Page (Listado de recursos):
-Verás todas las pistas (pádel, fútbol, tenis, etc.) con cards interactivas y un botón para ver el calendario de cada una.
-
-Calendario interactivo:
-
-Selecciona un bloque de tiempo disponible para hacer una reserva.
-
-El sistema valida solapamientos y bloqueos.
-
-Se pueden crear reservas recurrentes (pregunta cuántas semanas repetir).
+La base SQLite y las comprobaciones secuenciales no garantizan por sí solas exclusión
+de intervalos ante peticiones concurrentes; el límite está explicado en arquitectura.

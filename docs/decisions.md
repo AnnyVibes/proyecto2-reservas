@@ -59,3 +59,14 @@ Cada persona agrega sus decisiones al final, con número, fecha y autor. No se e
 - **Decisión:** `Booking.clean()` solo compara franjas cuando hay cancha, inicio y fin, y solo para reservas confirmadas. Así el formulario marca el campo que falta, y una reserva cancelada se puede guardar sin chocar con otras.
 - **Se mantiene:** los comandos de datos demo siguen con su propia comprobación de solapes, y la creación desde la app sigue pasando por `crear_reservas`.
 - **Evidencia:** `reservas/tests/test_doble_reserva_admin.py`; la prueba del formulario incompleto falla sin el cambio y pasa con él.
+
+## D-12 · Pruebas de contrato separadas por responsabilidad
+- **Fecha / responsable:** 2026-11-05 · Paso de Eliel; ejecución técnica por Codex, pendiente de revisión de Eliel.
+- **Decisión de implementación del agente:** agregar 47 pruebas en `tests/` sin tocar las 138 existentes ni la app. Cubrir BR-01 en servicio y API, ausencia de efectos de pago tras conflicto, límites exactos de horario/repetición/cancelación, BR-09 y AC-01 a AC-10. Usar reloj fijo y datos aislados para no depender del calendario real ni de los usuarios demo.
+- **Evidencia:** línea base 138 OK; suite ampliada 185 OK. Las funciones puras de KPIs ya estaban cubiertas en el paso 2 y su evidencia se enlaza sin duplicarlas.
+
+## D-13 · Distinguir CI, comprobación de navegador y decisión humana
+- **Fecha / responsable:** 2026-11-05 · Paso de Eliel; propuesta ejecutada por Codex, pendiente de revisión de Eliel.
+- **Decisión de implementación del agente:** CI Ubuntu/Python 3.12 por cada push y PR hacia main, usando solo dependencias fijadas y el runner de Django. Los tests HTTP se complementan con comprobación de navegador para AC-01/02, sin afirmar que CI ejecute JavaScript.
+- **Validación del agente:** selección de día/hora como visitante, login con retorno a la misma cancha y reserva local con pago simulado de $10.00, confirmada también en BD. La captura queda fuera de Git.
+- **Decisión reservada a Eliel:** revisión y merge del PR. El cambio de requisito del siguiente ciclo requiere un cambio concreto del equipo y no se inventa durante este paso.
