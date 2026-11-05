@@ -38,3 +38,4 @@
 /docs/ai-log/eliel.md                       @notSoEliel
 
 /reservas/tests/test_kpis.py @rodriguezac
+/reservas/tests/test_doble_reserva_admin.py @AnnyVibes
